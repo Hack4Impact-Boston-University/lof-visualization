@@ -1,4 +1,4 @@
-{crmTitle string="Spicy Contacts Overview"}
+{crmTitle string="Human Trafficking Incident Trends (based on Human Trafficking Incident Activity and Client Demographics Fields and Case Client Subtype)"}
 
 <div class="dc_contacts" id="dataviz-contacts">
 	<div id="datacount" style="margin-bottom:20px;">
