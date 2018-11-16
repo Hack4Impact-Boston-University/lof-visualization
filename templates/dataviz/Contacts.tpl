@@ -1,4 +1,4 @@
-{crmTitle string="Spicy Contacts Overview"}
+{crmTitle string="Jason Contacts Overview"}
 
 <div class="dc_contacts" id="dataviz-contacts">
 	<div id="datacount" style="margin-bottom:20px;">
