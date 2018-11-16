@@ -1,7 +1,55 @@
-BU Visualizations!
+CiviCRM Data Visualization Framework
 ====================================
 
-Taken from https://github.com/TechToThePeople/civisualize
+Civisualize is a civiCRM extension which let you visualize your civiCRM data with the power of [dc.js](http://dc-js.github.io/dc.js/) and [d3.js](http://d3js.org/). dc.js let users create graphs which enable filtering through the data with just a click on the graphs giving you a lot of powers. It's in beta, not going to hurt to hurt your data, do let us know if something works or doesn't.
+
+Civisualize will help you out with ready to use visualizations that we have created and will provide you the right resources if you plan to create your own custom visualization. 
+
+- [Installation](#installation)
+- [Ready to Use Visualizations](#ready-to-use-visualizations)
+- [Create your own visualizations](#create-your-own-visualizations)
+- [Suggestions](#we-love-you)
+
+***
+Installation
+------------
+You can directly clone to your civiCRM extension directory using
+
+`git clone https://github.com/TechToThePeople/civisualize.git`
+
+You can also download a zip file from 
+
+`https://codeload.github.com/TechToThePeople/civisualize/zip/master`
+
+and extract in your extension directory. The next step is enabling the extension which can be done from `"Administer -> Customize -> Manage CiviCRM Extensions".`
+
+Ready to Use Visualizations
+---------------------------
+The list of available visualizations is available at [yoursite.org/civicrm/dataviz](/civicrm/dataviz). Some of the currently available visualizations include
+
+- ####Contributions (/dataviz/contribute)
+  ![alt tag](https://raw.githubusercontent.com/TechToThePeople/civisualize/master/examples/contribution.jpg)
+  This provides an overview of contributions, type of contributors, the day of week the contribution was made, payment instrument, etc.
+
+
+- ####Contacts (/dataviz/contacts)
+  ![alt tag](https://raw.githubusercontent.com/TechToThePeople/civisualize/master/examples/contacts.jpg)
+  Contacts overview is a compilation of graphs showing types, gender, age, source of contact, contacts over the time etc. 
+
+- ####Events (/dataviz/events)
+  ![alt tag](https://raw.githubusercontent.com/TechToThePeople/civisualize/master/examples/events.jpg)
+  Events shows a lot of information about all the events of an organization and their participants. It shows events over time, participants over time, money generated from events, type of events, etc. It also displays a table listing all the events.
+  
+  
+  This table further links to specific event overview (/dataviz/event/<id>) showing participants, their status, their fee etc. 
+  ![alt tag](https://raw.githubusercontent.com/TechToThePeople/civisualize/master/examples/event.jpg)
+
+
+- ####Donor Trends (/dataviz/donortrends)
+  ![alt tag](https://raw.githubusercontent.com/TechToThePeople/civisualize/master/examples/donortrends.jpg)
+  Based on the idea of [CiviCRM Donor Trends Extension](https://github.com/leez/org.eff.donortrends/), the donor trends overview showcases a Bar Chart with new, lapsed, upgraded, downgraded and maintained donors over the years. This further showcases the gender and age of the donors and a list of all the donors.  
+
+Need not be mentioned, you can add more graphs and details to the above mentioned visualizations. 
 
 Create your own visualizations
 ------------------------------
@@ -79,3 +127,11 @@ In the template, put
 
 We have also used {crmTitle} function which let you set the title of the page, and a print_filter function that will help you in playing around with crossfilter.
 
+Checkour resources at [dc.js](http://dc-js.github.io/dc.js/) and create your first visualization.
+
+## Documentation and help
+If you want to add a document, add a markdown file that has the same name as the template into the doc folder
+
+We love you
+-------
+xavier made this, sid helped him. You can find us on civicrm forum, [@eucampaign](http://twitter.com/eucampaign) and [@sid0_o](http://twitter.com/sid0_o) on twitter, or in the dc mailing group. Be warned, d3 is awesome, but the learning curve is steep. Worthwhile, the view at the top is beautiful.
