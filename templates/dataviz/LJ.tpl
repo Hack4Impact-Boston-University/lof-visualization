@@ -23,7 +23,7 @@
 	</div>
 	<div id="state">
 	    <strong>Location by State</strong>
-	    <a class="reset" href="javascript:weekRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+	    <a class="reset" href="javascript:stateRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
 	    <div class="clearfix"></div>
 	</div>
 	<div class="clear"></div>
@@ -40,6 +40,7 @@
 
 	var data = {crmSQL file="contacts"};
 	var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
+	var stateStuff = {crmSQL file="LJ"};
 
 	{literal}
 
@@ -53,10 +54,15 @@
 
 			var dateFormat = d3.time.format("%Y-%m-%d");
 
-			var genderPie=null, typePie=null, sourceRow=null, monthLine=null, weekRow=null;
+			var genderPie=null, typePie=null, sourceRow=null, monthLine=null, stateRow=null;
 
 			cj(function($) {
 				var totalContacts = 0;
+
+
+				stateStuff.values.forEach(function(d) {
+					console.log(d);
+				});
 
 				data.values.forEach(function(d){
 					totalContacts+=d.count;
@@ -67,6 +73,12 @@
 					if(d.gender_id=="")
 						d.gender='None';
 				});
+
+				// stateStuff.values.forEach(function(d)
+				// {
+				// 	//d.state =
+				// 	console.log(d);
+				// });
 
 				// data.values.forEach(function(d) {
 				// 	console.log(d);
@@ -79,12 +91,17 @@
 				genderPie 	= dc.pieChart('#gender').innerRadius(10).radius(90);
 				sourceRow 	= dc.rowChart(guid + '.source');
 				monthLine 	= dc.lineChart('#contacts-by-month');
-				weekRow 	= dc.rowChart('#state');
+				stateRow 	= dc.rowChart('#state');
 
 				var ndx  = crossfilter(data.values), all = ndx.groupAll();
+				var ndxState  = crossfilter(stateStuff.values), all = ndxState.groupAll();
 
 				var totalCount = dc.dataCount("#datacount")
 			        .dimension(ndx)
+			        .group(all);
+
+				var totalCountState = dc.dataCount("#datacountstate")
+			        .dimension(ndxState)
 			        .group(all);
 
 			    document.getElementById("total-count").innerHTML=totalContacts;
@@ -101,13 +118,13 @@
 				var creationMonth = ndx.dimension(function(d) { return d.dd; });
 				var creationMonthGroup = creationMonth.group().reduceSum(function(d) { return d.count; });
 
-				var creationWeek = ndx.dimension(function (d) {
-					var day = d.dd.getDay();
+				var stateLocation = ndx.dimension(function (d) {
+					var loc =  Math.floor(Math.random() * (7) );
 					var name=["GA","FL","CA","TX","AZ","SC","NY"];
-					return day+"."+name[day];
+					return loc+"."+name[loc];
 				});
 
-				var creationWeekGroup = creationWeek.group().reduceSum(function(d){return d.count;});
+				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return d.count;});
 
 				var _group   = creationMonth.group().reduceSum(function(d) {return d.count;});
 				var group = {
@@ -166,12 +183,12 @@
 					})
 					.elasticX(true);
 
-				weekRow
+				stateRow
 					.width(300)
 					.height(200)
 					.margins({top: 0, left: 10, right: 10, bottom: 20})
-					.group(creationWeekGroup)
-					.dimension(creationWeek)
+					.group(stateLocationGroup)
+					.dimension(stateLocation)
 					.ordinalColors(["#d95f02","#1b9e77","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d"])
 					.label(function (d) {
 						return d.key.split(".")[1];
