@@ -70,12 +70,14 @@
             var statusLabel = {};
             s.values.forEach (function(d) {
                 statusLabel[d.id] = d.label;
+                
             });
             s=null;
 
             var typeLabel = {};
             i.values.forEach (function(d) {
                 typeLabel[d.value] = d.label;
+                console.log(d.label);
             });
             i=null;
 
@@ -101,8 +103,7 @@
                 Events[d.id]={'title':d.title,'sd':d.sd,'ed':d.ed};
             });
 
-            console.log(data.values);
-
+            console.log(i);
             var eventsBar, upcomingNumber, pastNumber, participantsLine, typePie, startdayRow, eventStatusPie, monetoryPie, dataTable;
 
             cj(function($) {

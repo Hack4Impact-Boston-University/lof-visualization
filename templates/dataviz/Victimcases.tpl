@@ -6,7 +6,7 @@
 	</div>
 	<div style="clear:both"></div>
 	<div id="type" style="width:350px;">
-	    <strong>Type</strong>
+	    <strong>Type Melissa</strong>
 	    <a class="reset" href="javascript:typePie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
 	    <div class="clearfix"></div>
 	</div>
