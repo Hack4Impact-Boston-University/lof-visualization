@@ -6,8 +6,6 @@ This is a demo
       <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
       <div class="clearfix"></div>
   </div>
-  <div class="clear"></div>
-
   <div id="gender" style="width:350px;">
       <strong>Gender</strong>
       <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
@@ -100,7 +98,7 @@ var nationalityLineGraph = dc.rowChart('#nationality')
                     .elasticX(true)
                     .xAxis().ticks(4);
 
-var type = ndx.dimension(function(d) {return d.type;});
+/* var type = ndx.dimension(function(d) {return d.type;});
 var typeGroup= type.group().reduceSum(function(d){return d.qty;});
 var typeRow = dc.rowChart('#type')
          .height(200)
@@ -110,8 +108,8 @@ var typeRow = dc.rowChart('#type')
           .ordering (function(d) {return d.qty;})
           .colors(d3.scale.category10())
           .group(typeGroup)
-          .elasticX(true);
-
+          .elasticX(true);*/
+ 
  
 //var typePie   = dc.pieChart("#type").innerRadius(10).radius(90);
 dc.renderAll();
