@@ -1,4 +1,4 @@
-CiviCRM Data Visualization Framework
+testCiviCRM Data Visualization Framework
 ====================================
 
 Civisualize is a civiCRM extension which let you visualize your civiCRM data with the power of [dc.js](http://dc-js.github.io/dc.js/) and [d3.js](http://d3js.org/). dc.js let users create graphs which enable filtering through the data with just a click on the graphs giving you a lot of powers. It's in beta, not going to hurt to hurt your data, do let us know if something works or doesn't.
