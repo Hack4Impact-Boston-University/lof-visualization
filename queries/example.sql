@@ -1,0 +1,1 @@
+SELECT * FROM civicrm_value_human_traffic_40;

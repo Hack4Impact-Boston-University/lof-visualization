@@ -27,7 +27,12 @@ This is a demo
 
 <script>
 //var data = {crmSQL sql="SELECT something, somethingelse, count(*) as total from civicrm_table where whatever group by something, somethingelse"};
+(function(guid){ldelim}
+	'use strict';
 
+	var data2 = {crmSQL file="example"};
+	//var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
+	console.log(data2)
 {literal}
 var data = {
 is_error:0,
@@ -114,11 +119,12 @@ var typeRow = dc.rowChart('#type')
 //var typePie   = dc.pieChart("#type").innerRadius(10).radius(90);
 dc.renderAll();
 
-
+	{/literal}
+{rdelim})("#dataviz-EMS ")
 </script>
 
 <style>
 .clear {clear:both;}
 
 </style>
-{/literal}
+
