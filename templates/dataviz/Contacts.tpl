@@ -10,6 +10,7 @@
 	    <a class="reset" href="javascript:typePie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
 	    <div class="clearfix"></div>
 	</div>
+	</div>
 		<div class="source">
 	    <strong>Source of Contact</strong>
 	    <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>

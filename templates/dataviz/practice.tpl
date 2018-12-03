@@ -1,25 +1,4 @@
-{crmTitle string="Events Overview"}
-
 <div class="eventsoverview">
-    <div style="font-size:20px; float:left; width:100%; text-align:center; height:90px;">
-        <span id="pastevents"></span>, 
-        <span id="currentevents"></span> and 
-        <span id="upcomingevents"></span>
-        with a total of <span id="nparticipants" style="color:steelblue; font-size:50px; line-height:80px"></span> Participants.
-    </div>
-
-    <div id="events" style="width:100%;">
-        <strong>Events</strong>
-        <a class="reset" href="javascript:eventsBar.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-    
-    <div id="participants" style="width:100%;">
-        <strong>Participants</strong>
-        <a class="reset" href="javascript:participantsLine.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-
     <div class="clear">
 
     <div id="type">
@@ -27,31 +6,6 @@
         <a class="reset" href="javascript:typePie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         <div class="clearfix"></div>
     </div>
-
-    <div id="duration">
-        <strong>Day of Week</strong>
-        <a class="reset" href="javascript:startdayRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-
-    <div id="ismonetory">
-        <strong>Is Monetory</strong>
-        <a class="reset" href="javascript:monetoryPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-
-    <div class="clear"></div>
-    <table id="dc-data-table">
-        <thead>
-            <tr class="header">
-                <th>Event Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Participants</th>
-            </tr>
-        </thead>
-    </table>
-    <div class="clear"></div>
 </div>
 
 <script>
@@ -359,26 +313,3 @@
     {/literal}
 </script>
 <div class="clear"></div>
-
-
-
-
-var nationality = {crmAPI entity="melissaqueries" action="getoptions" field="client_nationality"};
-var nationalityLabel = {};
- <div id="nationality" class="clear">
-      <strong>Nationality of Client</strong>
-      <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-      <div class="clearfix"></div>
-  </div>
-
- var nationality = ndx.dimension(function(d) {return d.nationality;});
-var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
-var nationalityRow = dc.rowChart('#nationality')
-         .height(200)
-          .margins({top: 20, left: 10, right: 10, bottom: 20})
-          .dimension(nationality)
-          .cap(5)
-          .ordering (function(d) {return d.qty;})
-          .colors(d3.scale.category10())
-          .group(nationalityGroup)
-          .elasticX(true);
