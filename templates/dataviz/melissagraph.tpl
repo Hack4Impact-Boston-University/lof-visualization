@@ -5,7 +5,13 @@
           <a class="reset" href="javascript:trafficPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
           <div class="clearfix"></div>
     </div>
-    <div class="clear"></div>
+    <div id="nationality" class="clear">
+      <strong>Nationality of Client</strong>
+      <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+      <div class="clearfix"></div>
+    </div>
+
+   <div class="clear"></div>
 
   
 <script>
@@ -21,6 +27,7 @@ var data = {crmSQL file="melissaqueries"};
 if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
 			var traffickingLabel = {};
+      var nationalityLabel = {};
 
 			/*trafficking.values.forEach(function(d){
 				traffickingLabel[d.key]=d.value;
@@ -36,11 +43,14 @@ if(!data.is_error){//Check for database error
 
 				data.values.forEach(function(d){ 
 					totalContacts+=d.count;
-					d.trafficking=traffickingLabel[d.gender_id];
+					d.trafficking=traffickingLabel[d.trafficking_id];
+          d.nationality=nationalityLabel[d.nationality_id];
 					if(d.source=="")
 						d.source='None';
 					if(d.trafficking_id=="")
 						d.trafficking='None';
+          if(d.nationality_id=="")
+						d.nationality='None';
 				});
 console.log(data)
 var ndx  = crossfilter(data.values)
@@ -54,6 +64,11 @@ var totalCount = dc.dataCount("#datacount")
 var trafficking = ndx.dimension(function(d) {return d.trafficking;});
 var traffickingGroup = trafficking.group().reduceSum(function(d){return d.qty;});
 
+var nationality = ndx.dimension(function(d) {return d.nationality;});
+var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
+
+
+
 var trafficPie = dc.pieChart("#trafficking")
                     .innerRadius(10)
                     .radius(100)
@@ -64,6 +79,16 @@ var trafficPie = dc.pieChart("#trafficking")
                     .minAngleForLabel(30)
                     //.valueAccessor(function (d) {return d.trafficking;})
                     .legend(dc.legend().x(15).y(10).itemHeight(13).gap(10));
+
+var nationalityRow = dc.rowChart('#nationality')
+          .height(200)
+          .margins({top: 20, left: 10, right: 10, bottom: 20})
+          .dimension(nationality)
+          .cap(5)
+          .ordering (function(d) {return d.qty;})
+          .colors(d3.scale.category10())
+          .group(nationalityGroup)
+          .elasticX(true);
 
  
 dc.renderAll(); });

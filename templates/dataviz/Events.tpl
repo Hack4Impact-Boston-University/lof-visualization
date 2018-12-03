@@ -359,26 +359,3 @@
     {/literal}
 </script>
 <div class="clear"></div>
-
-
-
-
-var nationality = {crmAPI entity="melissaqueries" action="getoptions" field="client_nationality"};
-var nationalityLabel = {};
- <div id="nationality" class="clear">
-      <strong>Nationality of Client</strong>
-      <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-      <div class="clearfix"></div>
-  </div>
-
- var nationality = ndx.dimension(function(d) {return d.nationality;});
-var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
-var nationalityRow = dc.rowChart('#nationality')
-         .height(200)
-          .margins({top: 20, left: 10, right: 10, bottom: 20})
-          .dimension(nationality)
-          .cap(5)
-          .ordering (function(d) {return d.qty;})
-          .colors(d3.scale.category10())
-          .group(nationalityGroup)
-          .elasticX(true);
