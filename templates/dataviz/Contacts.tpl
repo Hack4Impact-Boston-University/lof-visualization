@@ -41,7 +41,7 @@
 
 	var data = {crmSQL file="contacts"};
 	var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
-
+	console.log(data)
 	{literal}
 
 		if(!data.is_error){//Check for database error

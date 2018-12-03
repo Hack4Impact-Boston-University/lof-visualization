@@ -6,7 +6,6 @@ This is a demo
       <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
       <div class="clearfix"></div>
   </div>
-  <div class="clear"></div>
   <div id="gender" style="width:350px;">
       <strong>Gender</strong>
       <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
@@ -18,27 +17,37 @@ This is a demo
         <a class="reset" href="javascript:trafficPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         <div class="clearfix"></div>
   </div>
+  <div id="nationality" class="col-md-4">
+    <strong>Nationality of Client</strong>
+    <a class="reset" href="javascript:nationalityLineGraph.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+    <div class="clearfix"></div>
+</div>
   <div class="clear"></div>
 
 
 <script>
 //var data = {crmSQL sql="SELECT something, somethingelse, count(*) as total from civicrm_table where whatever group by something, somethingelse"};
+(function(guid){ldelim}
+	'use strict';
 
+	var data2 = {crmSQL file="example"};
+	//var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
+	console.log(data2)
 {literal}
 var data = {
 is_error:0,
 values:[
-  {type:"Guitarist",gender:"M",qty:58, trafficking: "Escort SVCs"},
-  {type:"Guitarist",gender:"F",qty:19, trafficking: "Escort SVCs"},
-  {type:"Violonist",gender:"M",qty:10, trafficking: "Pornography"},
-  {type:"Violonist",gender:"F",qty:23, trafficking: "Bars, Strip Clubs and Cantinas"},
-  {type:"Pianist",gender:"F",qty:30, trafficking: "Escort SVCs"},
-  {type:"Pianist",gender:"F",qty:33, trafficking: "Construction"},
-  {type:"Drummer",gender:"M",qty:18, trafficking: "Illicit Massage"},
-  {type:"Bassist",gender:"M",qty:17, trafficking: "Residential"},
-  {type:"Bassist",gender:"F",qty:9,  trafficking: "Residential"},
-  {type:"Trumpeteer",gender:"F",qty:9,  trafficking: "Remote Interactive Sexual Activities"},
-  {type:"Trumpeteer",gender:"F",qty:9,  trafficking: "Agricultural and Animal Husbandry"}
+  {type:"Guitarist",gender:"M",qty:58, trafficking: "Escort SVCs", nationality: "European"},
+  {type:"Guitarist",gender:"F",qty:19, trafficking: "Escort SVCs", nationality: "European"},
+  {type:"Violonist",gender:"M",qty:10, trafficking: "Pornography", nationality: "African"},
+  {type:"Violonist",gender:"F",qty:23, trafficking: "Bars, Strip Clubs and Cantinas", nationality: "African"},
+  {type:"Pianist",gender:"F",qty:30, trafficking: "Escort SVCs", nationality: "Mexican"},
+  {type:"Pianist",gender:"F",qty:33, trafficking: "Construction", nationality: "American"},
+  {type:"Drummer",gender:"M",qty:18, trafficking: "Illicit Massage", nationality: "American"},
+  {type:"Bassist",gender:"M",qty:17, trafficking: "Residential", nationality: "Indian"},
+  {type:"Bassist",gender:"F",qty:9,  trafficking: "Residential", nationality: "Indian"},
+  {type:"Trumpeteer",gender:"F",qty:9,  trafficking: "Remote Interactive Sexual Activities", nationality: "European"},
+  {type:"Trumpeteer",gender:"F",qty:9,  trafficking: "Agricultural and Animal Husbandry", nationality: "European"}
 
 ]};
 
@@ -81,7 +90,20 @@ var trafficPie = dc.pieChart("#trafficking")
                     .legend(dc.legend().x(15).y(10).itemHeight(13).gap(10));
 
 
-var type = ndx.dimension(function(d) {return d.type;});
+var nationalityType = ndx.dimension(function(d) {return d.nationality;});
+var nationalityGroup = nationalityType.group().reduceSum(function(d){return d.qty;});
+
+var nationalityLineGraph = dc.rowChart('#nationality')
+                  .width(300)
+                    .height(220)
+                    .margins({top: 10, left: 10, right: 30, bottom: 20})
+                    .group(nationalityGroup)
+                    .dimension(nationalityType)
+                    .ordinalColors(["#d95f02","#1b9e77","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d"])
+                    .elasticX(true)
+                    .xAxis().ticks(4);
+
+/* var type = ndx.dimension(function(d) {return d.type;});
 var typeGroup= type.group().reduceSum(function(d){return d.qty;});
 var typeRow = dc.rowChart('#type')
          .height(200)
@@ -91,17 +113,18 @@ var typeRow = dc.rowChart('#type')
           .ordering (function(d) {return d.qty;})
           .colors(d3.scale.category10())
           .group(typeGroup)
-          .elasticX(true);
-
+          .elasticX(true);*/
+ 
  
 //var typePie   = dc.pieChart("#type").innerRadius(10).radius(90);
 dc.renderAll();
 
-
+	{/literal}
+{rdelim})("#dataviz-EMS ")
 </script>
 
 <style>
 .clear {clear:both;}
 
 </style>
-{/literal}
+
