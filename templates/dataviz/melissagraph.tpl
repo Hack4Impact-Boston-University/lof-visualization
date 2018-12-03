@@ -15,21 +15,21 @@
 'use strict';
 
 var data = {crmSQL file="melissaqueries"};
-var trafficking = {crmAPI entity="melissaqueries" action="getoptions" field="What_Type_Of_Exploitation"};
+//var trafficking = {crmAPI entity="melissaqueries" action="getoptions" field="what_type_of_exploitation_311"};
 
 {literal}
 if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
 			var traffickingLabel = {};
 
-			trafficking.values.forEach(function(d){
+			/*trafficking.values.forEach(function(d){
 				traffickingLabel[d.key]=d.value;
-			});
+			});*/
      
 
-			var dateFormat = d3.time.format("%Y-%m-%d");
+			//var dateFormat = d3.time.format("%Y-%m-%d");
 
-			var trafficPie=null
+		//	var trafficPie=null
 
 			cj(function($) {
 				var totalContacts = 0;
@@ -66,14 +66,14 @@ var trafficPie = dc.pieChart("#trafficking")
                     .legend(dc.legend().x(15).y(10).itemHeight(13).gap(10));
 
  
-dc.renderAll();
+dc.renderAll(); });
+}
 {/literal}
-{rdelim})("#dataviz-melissagraph ")
+{rdelim})("#dataviz-melissagraph")
 
 </script>
 
 <style>
-.clear {clear:both;}
-
+{* .clear {clear:both;} *}
 </style>
 

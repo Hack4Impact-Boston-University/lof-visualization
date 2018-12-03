@@ -103,17 +103,7 @@ var nationalityLineGraph = dc.rowChart('#nationality')
                     .elasticX(true)
                     .xAxis().ticks(4);
 
-/* var type = ndx.dimension(function(d) {return d.type;});
-var typeGroup= type.group().reduceSum(function(d){return d.qty;});
-var typeRow = dc.rowChart('#type')
-         .height(200)
-          .margins({top: 20, left: 10, right: 10, bottom: 20})
-          .dimension(type)
-          .cap(5)
-          .ordering (function(d) {return d.qty;})
-          .colors(d3.scale.category10())
-          .group(typeGroup)
-          .elasticX(true);*/
+
  
  
 //var typePie   = dc.pieChart("#type").innerRadius(10).radius(90);
