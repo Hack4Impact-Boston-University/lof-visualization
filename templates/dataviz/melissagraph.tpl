@@ -21,7 +21,6 @@
 'use strict';
 
 var data = {crmSQL file="melissaqueries"};
-//var trafficking = {crmAPI entity="melissaqueries" action="getoptions" field="what_type_of_exploitation_311"};
 
 {literal}
 if(!data.is_error){//Check for database error
@@ -29,14 +28,9 @@ if(!data.is_error){//Check for database error
 			var traffickingLabel = {};
       var nationalityLabel = {};
 
-			/*trafficking.values.forEach(function(d){
-				traffickingLabel[d.key]=d.value;
-			});*/
-     
+console.log(data.values[0].what_type_of_exploitation_311)
+console.log(data.values[3].client_nationality_272)
 
-			//var dateFormat = d3.time.format("%Y-%m-%d");
-
-		//	var trafficPie=null
 
 			cj(function($) {
 				var totalContacts = 0;
@@ -52,7 +46,7 @@ if(!data.is_error){//Check for database error
           if(d.nationality_id=="")
 						d.nationality='None';
 				});
-console.log(data)
+//console.log(data)
 var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 

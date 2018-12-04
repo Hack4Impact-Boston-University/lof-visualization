@@ -1,1 +1,1 @@
-SELECT `civicrm_value_client_medica_36`.`client_nationality_272`, `civicrm_value_human_traffic_40`.`what_type_of_exploitation_311` FROM `civicrm_value_human_traffic_40`INNER JOIN `civicrm_value_client_medica_36`ON `civicrm_value_client_medica_36`.`id`=`civicrm_value_human_traffic_40`.`id`
+SELECT civicrm_value_client_medica_36.client_nationality_272, civicrm_value_human_traffic_40.what_type_of_exploitation_311 FROM civicrm_value_human_traffic_40 INNER JOIN civicrm_value_client_medica_36 ON civicrm_value_client_medica_36.id=civicrm_value_human_traffic_40.id;
