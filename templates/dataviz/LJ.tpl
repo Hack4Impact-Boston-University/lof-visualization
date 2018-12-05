@@ -35,6 +35,17 @@
 </div>
 
 <script>
+
+// --------------------------------------------------------------------------------------------
+
+
+// Front end now displays state id numbers accurately from data
+// we need to tie the id number to the state name through the chart 'civicrm_state_province'
+
+
+// --------------------------------------------------------------------------------------------
+
+
 (function(guid){ldelim}
 	'use strict';
 
@@ -58,10 +69,15 @@
 			cj(function($) {
 				var totalContacts = 0;
 
+				// data.values.forEach(function(d) {
+				// 	data.state_province_309 = 999;
+				// });
 
-				stateStuff.values.forEach(function(d) {
-					console.log(d);
-				});
+				// stateStuff.values.forEach(function(d)
+				// {
+				// 	console.log(d);
+				// 	d.state_province_309 = 999;
+				// });
 
 				data.values.forEach(function(d){
 					totalContacts+=d.count;
@@ -73,11 +89,10 @@
 						d.gender='None';
 				});
 
-				// stateStuff.values.forEach(function(d)
-				// {
-				// 	//d.state =
-				// 	console.log(d);
-				// });
+				stateStuff.values.forEach(function(d)
+				{
+					console.log(d);
+				});
 
 				// data.values.forEach(function(d) {
 				// 	console.log(d);
@@ -93,7 +108,7 @@
 				stateRow 	= dc.rowChart('#state');
 
 				var ndx  = crossfilter(data.values), all = ndx.groupAll();
-				var ndxState  = crossfilter(stateStuff.values), all = ndxState.groupAll();
+				var ndxState  = crossfilter(stateStuff.values), allState = ndxState.groupAll();
 
 				var totalCount = dc.dataCount("#datacount")
 			        .dimension(ndx)
@@ -101,14 +116,16 @@
 
 				var totalCountState = dc.dataCount("#datacountstate")
 			        .dimension(ndxState)
-			        .group(all);
+			        .group(allState);
 
 			    document.getElementById("total-count").innerHTML=totalContacts;
 
 				var gender = ndx.dimension(function(d){if(d.gender!="") return d.gender; else return 3;});
 				var genderGroup = gender.group().reduceSum(function(d){return d.count;});
 
-				var source = ndx.dimension(function(d){ return d.source;});
+				var source = ndx.dimension(function(d){
+					return d.source;
+				});
 				var sourceGroup = source.group().reduceSum(function(d){return d.count;});
 
 				var type        = ndx.dimension(function(d) {return d.type;});
@@ -117,13 +134,10 @@
 				var creationMonth = ndx.dimension(function(d) { return d.dd; });
 				var creationMonthGroup = creationMonth.group().reduceSum(function(d) { return d.count; });
 
-				var stateLocation = ndx.dimension(function (d) {
-					var loc =  Math.floor(Math.random() * (7) );
-					var name=["GA","FL","CA","TX","AZ","SC","NY"];
-					return loc+"."+name[loc];
+				var stateLocation = ndxState.dimension(function (d) {
+					return d.state_province_309;
 				});
-
-				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return d.count;});
+				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return 1;});
 
 				var _group   = creationMonth.group().reduceSum(function(d) {return d.count;});
 				var group = {
@@ -190,10 +204,10 @@
 					.dimension(stateLocation)
 					.ordinalColors(["#d95f02","#1b9e77","#7570b3","#e7298a","#66a61e","#e6ab02","#a6761d"])
 					.label(function (d) {
-						return d.key.split(".")[1];
+						return d.key;
 					})
 					.title(function (d) {
-						return d.value;
+ 						return d.value;
 					})
 					.elasticX(true)
 					.xAxis().ticks(4);
