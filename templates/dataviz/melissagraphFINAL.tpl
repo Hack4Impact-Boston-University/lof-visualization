@@ -23,36 +23,37 @@
 var data = {crmSQL file="melissaqueries"};
 
 {literal}
-if(!data.is_error){//Check for database error
+  if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
 			var traffickingLabel = {};
-      var nationalityLabel = {};
+   
 
-console.log(data.values[0].what_type_of_exploitation_311)
-console.log(data.values[3].client_nationality_272)
+        data.values.forEach(function(d){
+      console.log(d.value);
+				traffickingLabel[d.key]=d.value;
+			});
+
+      
+
 
 data.values.forEach(function(d){
         console.log(d.value)
-        
-				genderLabel[d.key]=d.value;
+       
+       
 			});
+
 
 cj(function($) {
 
 				data.values.forEach(function(d){
 
 					d.trafficking=traffickingLabel[d.trafficking_id];
-          d.nationality=nationalityLabel[d.nationality_id];
-
-          
 					if(d.source=="")
 						d.source='None';
-					if(d.trafficking_id=="")
-						d.trafficking='None';
-          if(d.nationality_id=="")
-						d.nationality='None';
+					if(d.what_type_of_exploitation_311=="")
+						d.what_type_of_exploitation_311='None';
 				});
-//console.log(data)
+console.log(data)
 var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 
@@ -61,11 +62,12 @@ var totalCount = dc.dataCount("#datacount")
       .group(all);
 
 
-var trafficking = ndx.dimension(function(d) {return d.trafficking;});
-var traffickingGroup = trafficking.group().reduceSum(function(d){return d.qty;});
 
-var nationality = ndx.dimension(function(d) {return d.nationality;});
-var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
+var trafficking = ndx.dimension(function(d) {return d.what_type_of_exploitation_311;});
+var traffickingGroup = trafficking.group().reduceSum(function(d){return 1;});
+
+var nationality = ndx.dimension(function(d) {return d.name;});
+var nationalityGroup= nationality.group().reduceSum(function(d){return 1;});
 
 
 
@@ -91,8 +93,12 @@ var nationalityRow = dc.rowChart('#nationality')
           .elasticX(true);
 
  
-dc.renderAll(); });
+dc.renderAll();
+});
 }
+else{
+			cj('.dc_contacts').html('<div style="color:red; font-size:18px;">There is a database error. Please Contact the administrator as soon as possible.</div>');
+		}
 {/literal}
 {rdelim})("#dataviz-melissagraph")
 
