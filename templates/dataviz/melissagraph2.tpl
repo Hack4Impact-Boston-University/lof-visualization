@@ -23,45 +23,23 @@
 var data = {crmSQL file="melissaqueries"};
 
 {literal}
-  if(!data.is_error){//Check for database error
+if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
-			var traffickingLabel = {};
-   
 
-        data.values.forEach(function(d){
-      console.log(d.value);
-				traffickingLabel[d.key]=d.value;
-			});
-
-      
-
-
-data.values.forEach(function(d){
-        console.log(d.value)
-        
-				genderLabel[d.key]=d.value;
-			});
-
-			cj(function($) {
-
-				data.values.forEach(function(d){ 
-					d.trafficking=traffickingLabel[d.what_type_of_exploitation_311];
+      var traffickingArray = {};
+      var nationalityArray = {};
+//console.log(data.values.what_type_of_exploitation_311)
+//console.log(data.values[3].client_nationality_272)
 
 cj(function($) {
-
 				data.values.forEach(function(d){
 
-					d.trafficking=traffickingLabel[d.trafficking_id];
-          d.nationality=nationalityLabel[d.nationality_id];
-
-          
->>>>>>> 881952aa2750a57b4e41db5b294803053ef3c2c2
-					if(d.source=="")
-						d.source='None';
-					if(d.what_type_of_exploitation_311=="")
-						d.what_type_of_exploitation_311='None';
-				});
-console.log(data)
+          //traffickingArray[d]
+          console.log(d.client_nationality_272)
+          //console.log(d.what_type_of_exploitation_311)
+         // d.trafficking = d.values[i].what_type_of_exploitation_311;
+         // i = i + 1;
+      });
 var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 
@@ -70,12 +48,12 @@ var totalCount = dc.dataCount("#datacount")
       .group(all);
 
 
-
-var trafficking = ndx.dimension(function(d) {return d.what_type_of_exploitation_311;});
+var trafficking = ndx.dimension(function(d) {
+  return d.what_type_of_exploitation_311;});
 var traffickingGroup = trafficking.group().reduceSum(function(d){return 1;});
 
-var nationality = ndx.dimension(function(d) {return d.name;});
-var nationalityGroup= nationality.group().reduceSum(function(d){return 1;});
+var nationality = ndx.dimension(function(d) {return d.client_nationality_272;});
+var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
 
 
 
@@ -103,9 +81,6 @@ var nationalityRow = dc.rowChart('#nationality')
  
 dc.renderAll(); });
 }
-else{
-			cj('.dc_contacts').html('<div style="color:red; font-size:18px;">There is a database error. Please Contact the administrator as soon as possible.</div>');
-		}
 {/literal}
 {rdelim})("#dataviz-melissagraph")
 

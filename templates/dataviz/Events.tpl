@@ -155,7 +155,7 @@
                 dataTable = dc.dataTable("#dc-data-table");
                 monetoryPie = dc.pieChart("#ismonetory").innerRadius(20).radius(70);
 
-                var startMonth = ndx.dimension(function(d) { return d3.time.month(d.sd);});
+                var startMonth = ndx.dimension(function(d) { console.log(d3.time.month(d.sd)); return d3.time.month(d.sd);});
                 var startMonthGroup = startMonth.group().reduce(eventReduceAdd,eventReduceRemove,eventReduceInitial);
                 
                 var registrationMonth = ndx.dimension(function(d) { return d3.time.month(d.rd);});
