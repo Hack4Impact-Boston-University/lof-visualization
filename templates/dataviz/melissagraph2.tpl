@@ -25,34 +25,21 @@ var data = {crmSQL file="melissaqueries"};
 {literal}
 if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
-			var traffickingLabel = {};
-      var nationalityLabel = {};
 
-console.log(data.values[0].what_type_of_exploitation_311)
-console.log(data.values[3].client_nationality_272)
-
-data.values.forEach(function(d){
-        console.log(d.value)
-        
-				genderLabel[d.key]=d.value;
-			});
+      var traffickingArray = {};
+      var nationalityArray = {};
+//console.log(data.values.what_type_of_exploitation_311)
+//console.log(data.values[3].client_nationality_272)
 
 cj(function($) {
-
 				data.values.forEach(function(d){
 
-					d.trafficking=traffickingLabel[d.trafficking_id];
-          d.nationality=nationalityLabel[d.nationality_id];
-
-          
-					if(d.source=="")
-						d.source='None';
-					if(d.trafficking_id=="")
-						d.trafficking='None';
-          if(d.nationality_id=="")
-						d.nationality='None';
-				});
-//console.log(data)
+          //traffickingArray[d]
+          console.log(d.client_nationality_272)
+          //console.log(d.what_type_of_exploitation_311)
+         // d.trafficking = d.values[i].what_type_of_exploitation_311;
+         // i = i + 1;
+      });
 var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 
@@ -61,10 +48,11 @@ var totalCount = dc.dataCount("#datacount")
       .group(all);
 
 
-var trafficking = ndx.dimension(function(d) {return d.trafficking;});
-var traffickingGroup = trafficking.group().reduceSum(function(d){return d.qty;});
+var trafficking = ndx.dimension(function(d) {
+  return d.what_type_of_exploitation_311;});
+var traffickingGroup = trafficking.group().reduceSum(function(d){return 1;});
 
-var nationality = ndx.dimension(function(d) {return d.nationality;});
+var nationality = ndx.dimension(function(d) {return d.client_nationality_272;});
 var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
 
 
