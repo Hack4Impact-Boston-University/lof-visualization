@@ -48,12 +48,14 @@
 			var numberFormat = d3.format(".2f");
 			var genderLabel = {};
 
+     
 			gender.values.forEach(function(d){
 				genderLabel[d.key]=d.value;
 			});
 
 			var dateFormat = d3.time.format("%Y-%m-%d");
 
+      
 			var genderPie=null, typePie=null, sourceRow=null, monthLine=null, weekRow=null;
 
 			cj(function($) {
