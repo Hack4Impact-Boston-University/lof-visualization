@@ -38,24 +38,16 @@ var data = {crmSQL file="melissaqueries"};
 
 data.values.forEach(function(d){
         console.log(d.value)
-        
-				genderLabel[d.key]=d.value;
+       
+       
 			});
 
-			cj(function($) {
-
-				data.values.forEach(function(d){ 
-					d.trafficking=traffickingLabel[d.what_type_of_exploitation_311];
 
 cj(function($) {
 
 				data.values.forEach(function(d){
 
 					d.trafficking=traffickingLabel[d.trafficking_id];
-          d.nationality=nationalityLabel[d.nationality_id];
-
-          
->>>>>>> 881952aa2750a57b4e41db5b294803053ef3c2c2
 					if(d.source=="")
 						d.source='None';
 					if(d.what_type_of_exploitation_311=="")
@@ -101,7 +93,8 @@ var nationalityRow = dc.rowChart('#nationality')
           .elasticX(true);
 
  
-dc.renderAll(); });
+dc.renderAll();
+});
 }
 else{
 			cj('.dc_contacts').html('<div style="color:red; font-size:18px;">There is a database error. Please Contact the administrator as soon as possible.</div>');
