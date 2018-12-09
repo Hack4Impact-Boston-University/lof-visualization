@@ -1,4 +1,4 @@
-{crmTitle string="Human Trafficking Incident Trends (based on Human Trafficking Incident Activity and Client Demographics Fields and Case Client Subtype)"}
+{crmTitle string="LJ Figured Out State Location Graph"}
 
 <div class="dc_contacts" id="dataviz-contacts">
 	<div id="datacount" style="margin-bottom:20px;">
@@ -41,7 +41,7 @@
 
 	var data = {crmSQL file="contacts"};
 	var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
-	var stateStuff = {crmSQL file="LJ"};
+	var stateInfo = {crmSQL file="LJ"};
 	{literal}
 
 		if(!data.is_error){//Check for database error
@@ -59,15 +59,6 @@
 			cj(function($) {
 				var totalContacts = 0;
 
-				// data.values.forEach(function(d) {
-				// 	data.state_province_309 = 999;
-				// });
-
-				stateStuff.values.forEach(function(d)
-				{
-					console.log(d);
-				});
-
 				data.values.forEach(function(d){
 					totalContacts+=d.count;
 					d.gender=genderLabel[d.gender_id];
@@ -77,15 +68,6 @@
 					if(d.gender_id=="")
 						d.gender='None';
 				});
-
-				stateStuff.values.forEach(function(d)
-				{
-					console.log(d);
-				});
-
-				// data.values.forEach(function(d) {
-				// 	console.log(d);
-				// });
 
 				var min = d3.time.day.offset(d3.min(data.values, function(d) { return d.dd;} ),-2);
 				var max = d3.time.day.offset(d3.max(data.values, function(d) { return d.dd;} ), 2);
@@ -97,7 +79,7 @@
 				stateRow 	= dc.rowChart('#state');
 
 				var ndx  = crossfilter(data.values), all = ndx.groupAll();
-				var ndxState  = crossfilter(stateStuff.values), allState = ndxState.groupAll();
+				var ndxState  = crossfilter(stateInfo.values), allState = ndxState.groupAll();
 
 				var totalCount = dc.dataCount("#datacount")
 			        .dimension(ndx)
@@ -124,7 +106,6 @@
 				var creationMonthGroup = creationMonth.group().reduceSum(function(d) { return d.count; });
 
 				var stateLocation = ndxState.dimension(function (d) {
-					// return d.state_province_309;
 					return d.abbreviation;
 				});
 				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return 1;});
