@@ -1,1 +1,4 @@
-SELECT * FROM `civicrm_value_human_traffic_40` WHERE `state_province_309`
+SELECT *
+FROM civicrm_value_human_traffic_40
+INNER JOIN civicrm_state_province ON civicrm_value_human_traffic_40.state_province_309 = civicrm_state_province.id
+WHERE state_province_309

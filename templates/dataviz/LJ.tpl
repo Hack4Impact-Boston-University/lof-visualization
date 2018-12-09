@@ -36,16 +36,6 @@
 
 <script>
 
-// --------------------------------------------------------------------------------------------
-
-
-// Front end now displays state id numbers accurately from data
-// we need to tie the id number to the state name through the chart 'civicrm_state_province'
-
-
-// --------------------------------------------------------------------------------------------
-
-
 (function(guid){ldelim}
 	'use strict';
 
@@ -73,11 +63,10 @@
 				// 	data.state_province_309 = 999;
 				// });
 
-				// stateStuff.values.forEach(function(d)
-				// {
-				// 	console.log(d);
-				// 	d.state_province_309 = 999;
-				// });
+				stateStuff.values.forEach(function(d)
+				{
+					console.log(d);
+				});
 
 				data.values.forEach(function(d){
 					totalContacts+=d.count;
@@ -135,7 +124,8 @@
 				var creationMonthGroup = creationMonth.group().reduceSum(function(d) { return d.count; });
 
 				var stateLocation = ndxState.dimension(function (d) {
-					return d.state_province_309;
+					// return d.state_province_309;
+					return d.abbreviation;
 				});
 				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return 1;});
 
