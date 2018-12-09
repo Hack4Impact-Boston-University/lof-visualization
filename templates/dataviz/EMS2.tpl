@@ -15,11 +15,12 @@ This is a demo
 
 (function(guid){ldelim}
 	'use strict';
-var data2 = {crmSQL file= "jasonqueries"};
-
+//var data2 = {crmSQL file= "jasonqueries"};
+var data = {crmSQL file = "jasonqueries"};
 //console.log(data2)
 
 {literal}
+/*
 var data = {
 is_error:0,
 values:[
@@ -33,8 +34,9 @@ values:[
   {type:"Bassist",gender:"M",qty:17, date_exploitation_started_306: "2018-03-08 00:00:00"},
   {type:"Bassist",gender:"F",qty:9, date_exploitation_started_306: "2018-03-08 00:00:00"}
 ]};
+*/
 
-var ndx  = crossfilter(data2.values)
+var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 
 var totalCount = dc.dataCount("#datacount")
@@ -42,20 +44,28 @@ var totalCount = dc.dataCount("#datacount")
       .group(all);
 
 var datetimeFormat = d3.time.format("%Y-%m-%d %H:%M:%S");
- data2.values.forEach(function(d){
+ data.values.forEach(function(d){
                 d.dataparsed = datetimeFormat.parse(d.date_exploitation_started_306);
                 //console.log(d.dataparsed)
             });
 
 
 
-var min = d3.time.month.offset(d3.min(data2.values, function(d) { return d.dataparsed;} ),-1);
-var max = d3.time.month.offset(d3.max(data2.values, function(d) { return d.dataparsed;} ), 1);
+var min = d3.time.month.offset(d3.min(data.values, function(d) { return d.dataparsed;} ),-1);
+var max = d3.time.month.offset(d3.max(data.values, function(d) { return d.dataparsed;} ), 1);
 //console.log("MIN" + min)
 //console.log("MAX" + max)
 
 
-var cases = ndx.dimension(function(d) {console.log(d3.time.month(d.dataparsed));
+var cases = ndx.dimension(function(d) {//console.log(d3.time.month(d.dataparsed));
+if (d.dataparsed != null)
+{
+  console.log(d3.time.month.(d.dataparsed)) //try d.dataparsed
+  return (d3.time.month(d.dataparsed));
+}
+else {
+  return 0;
+}
 return d3.time.month(d.dataparsed);});
 var casesGroup = cases.group().reduceSum(function(d){return 1;});
 var casesPie = dc.barChart("#cases")
