@@ -1,7 +1,7 @@
-{crmTitle string="LJ Figured Out State Location Graph"}
+{crmTitle string="Location by State"}
 
 <div class="dc_contacts" id="dataviz-contacts">
-	<div id="datacountstate" style="margin-bottom:20px;">
+	<div id="datacount" style="margin-bottom:20px;">
 	    <h2><strong><span class="filter-count"></span></strong> contacts selected from a total of <strong><span id="total-count"></span></strong> records</h2>
 	</div>
 	<div style="clear:both"></div>
@@ -19,7 +19,7 @@
 (function(guid){ldelim}
 	'use strict';
 
-	var stateInfo = {crmSQL file="LJ"};
+	var stateInfo = {crmSQL file="LJ"}; // sql query
 	{literal}
 
 		if(!stateInfo.is_error){	//Check for database error
@@ -34,15 +34,15 @@
 
 				stateRow 	= dc.rowChart('#state');
 
-				var ndxState  = crossfilter(stateInfo.values), allState = ndxState.groupAll();
+				var ndx  = crossfilter(stateInfo.values), all = ndx.groupAll();
 
-				var totalCountState = dc.dataCount("#datacountstate")
-			        .dimension(ndxState)
-			        .group(allState);
+				var totalCount = dc.dataCount("#datacount")
+			        .dimension(ndx)
+			        .group(all);
 
 			    document.getElementById("total-count").innerHTML=totalContacts;
 
-				var stateLocation = ndxState.dimension(function (d) {
+				var stateLocation = ndx.dimension(function (d) {
 					return d.abbreviation;
 				});
 				var stateLocationGroup = stateLocation.group().reduceSum(function(d){return 1;});
