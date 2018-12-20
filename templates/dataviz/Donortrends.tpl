@@ -1,59 +1,73 @@
-{crmTitle string="Donor Trends"}
+{crmTitle string="Human Trafficking Incident Trends
+based on Human Trafficking Incident Activity & Client Demographic Fields & Case Client Subtype"}
 
 {literal}
-    <style>
-        #donorBar{
-            width: 100%;
-        }
-        #genderPie{
-            width:50%;
-        }
-    </style>
+  <style>
+    #donorBar{
+      width: 100%;
+    }
+    #genderPie{
+      width:50%;
+    }
+  </style>
 {/literal}
 
 <div id="donortrends">
-    <div id="donorsCount" style="font-size:14px; margin-bottom:5px;"><span id="contactNumber"></span> selected from a total of <span id="contactTotal" style="font-weight:800;"></span>.</div>
-    <div id="donorBar">
-        <strong>Donor Trends</strong>
-        <a class="reset" href="javascript:donorBar.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-    <div id="genderPie">
-        <strong>Gender</strong>
-        <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-    <div id="ageRow">
-        <strong>Age</strong>
-        <a class="reset" href="javascript:ageRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        <div class="clearfix"></div>
-    </div>
-    <div class="clear"></div>
-    <table id="dc-data-table">
-        <thead>
-            <tr class="header">
-                <th>Participant Name</th>
-                <th>Gender</th>
-                <th>Age</th>
-                <th>Total Amount</th>
-            </tr>
-        </thead>
-    </table>
+  <div id="donorsCount" style="font-size:14px; margin-bottom:5px;">
+    <span id="contactNumber"></span>
+    cases selected from a total of
+    <span id="contactTotal" style="font-weight:800;"></span>.
+  </div>
+  <div id="donorBar">
+    <strong>Victimization Trends</strong>
+    <a class="reset" href="javascript:donorBar.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+    <div class="clearfix"></div>
+  </div>
+  <div id="genderPie">
+    <strong>Gender</strong>
+    <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+    <div class="clearfix"></div>
+  </div>
+  <div id="ageRow">
+    <strong>Age</strong>
+    <a class="reset" href="javascript:ageRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+    <div class="clearfix"></div>
+  </div>
+  <div class="clear"></div>
+  <table id="dc-data-table">
+    <thead>
+      <tr class="header">
+        <th>Participant Name</th>
+        <th>Gender</th>
+        <th>Age</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+  </table>
 </div>
 <div class="clear"></div>
 
-
 <script>
-
     'use strict';
 
-    var data        = {crmSQL file="donors"};
+    // Not sure SQL command below works correctly (DB sturcture too complicated, need to be simplified),
+    // and thus it's not complete yet (not sure which id should I use for D3's data binding).
+
+    // Extract 'what_type_of_exploitation_311' & 'data_exploitation_started_306' fields
+    var data = SELECT what_type_of_exploitation_311, date_exploitation_started_306
+               FROM civicrm_value_human_traffic_40 as human_traffic
+               INNER JOIN civicrm_activity_contact as activity_contact
+               ON human_traffic.entity_id = activity_contact.activity_id
+               INNER JOIN civicrm_contact as contact
+               ON activity_contact.contact_id = contact.id;
+    // Just for debugging purpose
+    console.log(data);
+    // Parse dates to make them more tractable
     var dateFormat  = d3.time.format("%Y-%m-%d");
     var currentDate = new Date();
 
     {literal}
-
-        if(!data.is_error){
+        if(!data.is_error) {
 
             var contactNumber, contactTotal, donorBar, genderPie, ageRow, dataTable;
 
@@ -84,13 +98,12 @@
                 function print_filter(filter){var f=eval(filter);if(typeof(f.length)!="undefined"){}else{}if(typeof(f.top)!="undefined"){f=f.top(Infinity);}else{}if(typeof(f.dimension)!="undefined"){f=f.dimension(function(d){return "";}).top(Infinity);}else{}console.log(filter+"("+f.length+")="+JSON.stringify(f).replace("[", "[\n\t").replace(/}\,/g, "},\n\t").replace("]", "\n]"));}
 
                 /* Functions */
-
                 function Add(a,d){
-                    var f=1, ug=0, dg=0, mtd=0; 
+                    var f=1, ug=0, dg=0, mtd=0;
                     data.values.forEach(function(m){
-                        if(m.year<d.year){
-                            if(m.contact_id==d.contact_id){
-                                if(m.year===d.year-1){
+                        if(m.date_exploitation_started_306 < d.date_exploitation_started_306){
+                            if(m.contact_id == d.contact_id){
+                                if(m.date_exploitation_started_306 === d.date_exploitation_started_306){
                                     f=0;
                                     if(m.total_amount==d.total_amount){
                                         mtd=1;
@@ -105,6 +118,7 @@
                             }
                         }
                     });
+                    // These fields should be updated later
                     a.fresh+=f;
                     a.upgraded+=ug;
                     a.downgraded+=dg;
@@ -113,14 +127,14 @@
                 }
 
                 function Remove(a, d) {
-                    var f=1, ug=0, dg=0, mtd=0; 
+                    var f=1, ug=0, dg=0, mtd=0;
                     data.values.forEach(function(m){
-                        if(m.year!=d.year){
+                        if(m.date_exploitation_started_306 != d.date_exploitation_started_306){
                             if(m.contact_id==d.contact_id){
-                                if(m.year<d.year){
+                                if(m.date_exploitation_started_306 < d.date_exploitation_started_306){
                                     f=0;
                                 }
-                                if(m.year===d.year-1){
+                                if(m.date_exploitation_started_306 === d.date_exploitation_started_306-1){
                                     if(m.total_amount==d.total_amount){
                                         mtd=1;
                                     }
@@ -134,6 +148,7 @@
                             }
                         }
                     });
+                    // These fields should be updated later (e.g. Labor Trafficking)
                     a.fresh-=f;
                     a.upgraded-=ug;
                     a.downgraded-=dg;
@@ -177,8 +192,8 @@
 
                 var ndx         = crossfilter(data.values),
                 all             = ndx.groupAll();
-                var minYear     = d3.min(data.values, function(d){return d.year;});
-                var maxYear     = d3.max(data.values, function(d){return d.year;});
+                var minYear     = d3.min(data.values, function(d){return d.date_exploitation_started_306;});
+                var maxYear     = d3.max(data.values, function(d){return d.date_exploitation_started_306;});
 
                 donorBar        = dc.barChart("#donorBar");
                 genderPie       = dc.pieChart("#genderPie").radius(80);
@@ -186,7 +201,7 @@
                 dataTable       = dc.dataTable("#dc-data-table");
                 contactNumber   = dc.numberDisplay("#contactNumber");
 
-                var byYear      = ndx.dimension(function(d) {return d.year;});
+                var byYear      = ndx.dimension(function(d) {return d.date_exploitation_started_306;});
                 var byYearGroup = byYear.group().reduce(Add, Remove, Initial);
                 var group = {
                     all:function () {
