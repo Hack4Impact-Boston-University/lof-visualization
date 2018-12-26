@@ -1,79 +1,60 @@
-{crmTitle string="Human Trafficking Incident Trends
-based on Human Trafficking Incident Activity & Client Demographic Fields & Case Client Subtype"}
+{crmTitle string="Donor Trends"}
 
 {literal}
-  <style>
-    #donorBar{
-      width: 100%;
-    }
-    #genderPie{
-      width:50%;
-    }
-  </style>
+    <style>
+        #donorBar{
+            width: 100%;
+        }
+        #genderPie{
+            width:50%;
+        }
+    </style>
 {/literal}
 
 <div id="donortrends">
-  <div id="donorsCount" style="font-size:14px; margin-bottom:5px;">
-    <span id="contactNumber"></span>
-    cases selected from a total of
-    <span id="contactTotal" style="font-weight:800;"></span>.
-  </div>
-  <div id="donorBar">
-    <strong>Victimization Trends</strong>
-    <a class="reset" href="javascript:donorBar.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-    <div class="clearfix"></div>
-  </div>
-  <div id="genderPie">
-    <strong>Gender</strong>
-    <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-    <div class="clearfix"></div>
-  </div>
-  <div id="ageRow">
-    <strong>Age</strong>
-    <a class="reset" href="javascript:ageRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-    <div class="clearfix"></div>
-  </div>
-  <div class="clear"></div>
-  <table id="dc-data-table">
-    <thead>
-      <tr class="header">
-        <th>Participant Name</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Total Amount</th>
-      </tr>
-    </thead>
-  </table>
+    <div id="donorsCount" style="font-size:14px; margin-bottom:5px;"><span id="contactNumber"></span> selected from a total of <span id="contactTotal" style="font-weight:800;"></span>.</div>
+    <div id="donorBar">
+        <strong>Donor Trends</strong>
+        <a class="reset" href="javascript:donorBar.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        <div class="clearfix"></div>
+    </div>
+    <div id="genderPie">
+        <strong>Gender</strong>
+        <a class="reset" href="javascript:genderPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        <div class="clearfix"></div>
+    </div>
+    <div id="ageRow">
+        <strong>Age</strong>
+        <a class="reset" href="javascript:ageRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clear"></div>
+    <table id="dc-data-table">
+        <thead>
+            <tr class="header">
+                <th>Participant Name</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+    </table>
 </div>
 <div class="clear"></div>
 
+
 <script>
     'use strict';
-
-    // Not sure SQL command below works correctly (DB sturcture too complicated, need to be simplified),
-    // and thus it's not complete yet (not sure which id should I use for D3's data binding).
-
-    // Extract 'what_type_of_exploitation_311' & 'data_exploitation_started_306' fields
-    var data = {crmSQL file="another"};
-    // Just for debugging purpose
-    console.log(data);
-
+    var data        = {crmSQL file="donors"};
+    var dateFormat  = d3.time.format("%Y-%m-%d");
+    var currentDate = new Date();
     {literal}
-        if(!data.is_error) {
-
-            // Parse dates to make them more tractable
-            var dateFormat  = d3.time.format("%Y-%m-%d");
-            var currentDate = new Date();
-
+        if(!data.is_error){
             var contactNumber, contactTotal, donorBar, genderPie, ageRow, dataTable;
-
             cj(function($){
-
                 var genderLabel = {1:"Male",2:"Female"};
-
                 var contactList = {};
                 contactTotal    = 0;
-
                 data.values.forEach(function(d){
                     if(!contactList[d.contact_id]){
                         contactTotal+=1;
@@ -88,18 +69,15 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     d.birth_date = dateFormat.parse(d.birth_date);
                     d.age=d3.time.years(d.birth_date, currentDate).length-1;
                 });
-
                 cj("#contactTotal").text(contactTotal);
-
                 function print_filter(filter){var f=eval(filter);if(typeof(f.length)!="undefined"){}else{}if(typeof(f.top)!="undefined"){f=f.top(Infinity);}else{}if(typeof(f.dimension)!="undefined"){f=f.dimension(function(d){return "";}).top(Infinity);}else{}console.log(filter+"("+f.length+")="+JSON.stringify(f).replace("[", "[\n\t").replace(/}\,/g, "},\n\t").replace("]", "\n]"));}
-
                 /* Functions */
                 function Add(a,d){
-                    var f=1, ug=0, dg=0, mtd=0;
+                    var f=1, ug=0, dg=0, mtd=0; 
                     data.values.forEach(function(m){
-                        if(m.date_exploitation_started_306 < d.date_exploitation_started_306){
-                            if(m.contact_id == d.contact_id){
-                                if(m.date_exploitation_started_306 === d.date_exploitation_started_306){
+                        if(m.year<d.year){
+                            if(m.contact_id==d.contact_id){
+                                if(m.year===d.year-1){
                                     f=0;
                                     if(m.total_amount==d.total_amount){
                                         mtd=1;
@@ -114,23 +92,21 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                             }
                         }
                     });
-                    // These fields should be updated later
                     a.fresh+=f;
                     a.upgraded+=ug;
                     a.downgraded+=dg;
                     a.maintained+=mtd;
                     return a;
                 }
-
                 function Remove(a, d) {
-                    var f=1, ug=0, dg=0, mtd=0;
+                    var f=1, ug=0, dg=0, mtd=0; 
                     data.values.forEach(function(m){
-                        if(m.date_exploitation_started_306 != d.date_exploitation_started_306){
+                        if(m.year!=d.year){
                             if(m.contact_id==d.contact_id){
-                                if(m.date_exploitation_started_306 < d.date_exploitation_started_306){
+                                if(m.year<d.year){
                                     f=0;
                                 }
-                                if(m.date_exploitation_started_306 === d.date_exploitation_started_306-1){
+                                if(m.year===d.year-1){
                                     if(m.total_amount==d.total_amount){
                                         mtd=1;
                                     }
@@ -144,18 +120,15 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                             }
                         }
                     });
-                    // These fields should be updated later (e.g. Labor Trafficking)
                     a.fresh-=f;
                     a.upgraded-=ug;
                     a.downgraded-=dg;
                     a.maintained-=mtd;
                     return a;
                 }
-
                 function Initial() {
                     return { fresh:0, upgraded:0, downgraded:0, maintained:0, lapsed:0};
                 }
-
                 function countAdd(a,d){
                     if(a.contacts[d.contact_id]==0)
                     {
@@ -167,7 +140,6 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     }
                     return a;
                 }
-
                 function removeCount(a,d){
                     if(a.contacts[d.contact_id]>0){
                         a.contacts[d.contact_id]--;
@@ -177,7 +149,6 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     }
                     return a;
                 }
-
                 function initialCount(){
                     var c={};
                     data.values.forEach(function(d){
@@ -185,19 +156,19 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     });
                     return {count:0, contacts:c};
                 }
-
                 var ndx         = crossfilter(data.values),
                 all             = ndx.groupAll();
-                var minYear     = d3.min(data.values, function(d){return d.date_exploitation_started_306;});
-                var maxYear     = d3.max(data.values, function(d){return d.date_exploitation_started_306;});
+                var min = d3.time.month.offset(d3.min(data.values, function(d) { return d.year;} ),-1);
+             var max = d3.time.month.offset(d3.max(data.values, function(d) { return d.year;} ), 1);
 
+                var minYear     = d3.min(data.values, function(d){return d.year;});
+                var maxYear     = d3.max(data.values, function(d){return d.year;});
                 donorBar        = dc.barChart("#donorBar");
                 genderPie       = dc.pieChart("#genderPie").radius(80);
                 ageRow          = dc.rowChart("#ageRow");
                 dataTable       = dc.dataTable("#dc-data-table");
                 contactNumber   = dc.numberDisplay("#contactNumber");
-
-                var byYear      = ndx.dimension(function(d) {return d.date_exploitation_started_306;});
+                var byYear      = ndx.dimension(function(d) {return d.year;});
                 var byYearGroup = byYear.group().reduce(Add, Remove, Initial);
                 var group = {
                     all:function () {
@@ -224,10 +195,8 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                             return g;
                         }
                 };
-
                 var gender      = ndx.dimension(function(d){return d.gender_id});
                 var genderGroup = gender.group().reduce(countAdd,removeCount, initialCount);
-
                 var age         = ndx.dimension(function(d){
                     if(d.birth_date=="")
                         return "Unspecified";
@@ -254,18 +223,14 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                         return "More than 90";
                 });
                 var ageGroup    = age.group().reduce(countAdd,removeCount, initialCount);
-
                 var list        = ndx.dimension(function(d){return d.contact_id});
-
                 var grouped=ndx.groupAll().reduce(countAdd,removeCount,initialCount);
-
                 contactNumber
                     .group(grouped)
                     .valueAccessor(function(d){
                         return d.count;
                     })
                     .html({"some":"<span style='font-weight:800;'>%number</span> Donors","one":"<span style='font-weight:800;'>%number</span> Donor","none":"No Records"});
-
                 donorBar
                     .height(200)
                     .group(group,"New")
@@ -280,13 +245,12 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     .round(function(n) {
                         return Math.floor(n)+0.5}
                         )
-                    .x(d3.scale.linear().domain([minYear-1, maxYear+1]))
+                    .x(d3.time.scale().domain([min, max]))
                     .legend(dc.legend().x(50).y(10).itemHeight(13).gap(5))
-                    .stack(group,"Upgraded", function(d){return d.value.upgraded;})
-                    .stack(group,"Downgraded", function(d){return d.value.downgraded;})
-                    .stack(group,"Maintained", function(d){return d.value.maintained;})
-                    .stack(group,"Lapsed", function(d){return d.value.lapsed;});
-
+                    .stack(group,"Upgraded", function(d){return 5})
+                    .stack(group,"Downgraded", function(d){return 1})
+                    //.stack(group,"Maintained", function(d){return d.value.maintained;})
+                    //.stack(group,"Lapsed", function(d){return d.value.lapsed;});
                 genderPie
                     .dimension(gender)
                     .height(250)
@@ -294,7 +258,6 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     .valueAccessor(function(d){
                         return d.value.count;
                     });
-
                 ageRow
                     .height(250)
                     .dimension(age)
@@ -302,12 +265,10 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     .valueAccessor(function(d){
                         return d.value.count;
                     });
-
                 dataTable
                     .dimension(list)
                     .group(function(d) {return d.year;})
                 // dynamic columns creation using an array of closures
-
                 .columns([
                     function(d) {return d.display_name; },
                     function(d) {return d.gender_id;},
@@ -317,7 +278,6 @@ based on Human Trafficking Incident Activity & Client Demographic Fields & Case 
                     .sortBy(function (d) {
                         return d.sd;
                     });
-
                 dc.renderAll();
             });
         }

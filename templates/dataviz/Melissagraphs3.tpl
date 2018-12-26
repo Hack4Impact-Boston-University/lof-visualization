@@ -1,10 +1,5 @@
 {crmTitle title="Melissa Graphs: Type of Human Trafficking Pie and Nationality of Client"}
   <div class="type" id="clear">
-    <div id="trafficking" style="width:600px;">
-          <strong>Type of Human Trafficking</strong>
-          <a class="reset" href="javascript:trafficPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-          <div class="clearfix"></div>
-    </div>
     <div id="nationality" class="clear">
       <strong>Nationality of Client</strong>
       <a class="reset" href="javascript:sourceRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
@@ -23,37 +18,36 @@
 var data = {crmSQL file="melissaqueries"};
 
 {literal}
-  if(!data.is_error){//Check for database error
+if(!data.is_error){//Check for database error
 			var numberFormat = d3.format(".2f");
 			var traffickingLabel = {};
-   
+      var nationalityLabel = {};
 
-        data.values.forEach(function(d){
-      console.log(d.value);
-				traffickingLabel[d.key]=d.value;
-			});
-
-      
-
+console.log(data.values[0].what_type_of_exploitation_311)
+console.log(data.values[3].client_nationality_272)
 
 data.values.forEach(function(d){
         console.log(d.value)
-       
-       
+        
+				genderLabel[d.key]=d.value;
 			});
-
 
 cj(function($) {
 
 				data.values.forEach(function(d){
 
 					d.trafficking=traffickingLabel[d.trafficking_id];
+          d.nationality=nationalityLabel[d.nationality_id];
+
+          
 					if(d.source=="")
 						d.source='None';
-					if(d.what_type_of_exploitation_311=="")
-						d.what_type_of_exploitation_311='None';
+					if(d.trafficking_id=="")
+						d.trafficking='None';
+          if(d.nationality_id=="")
+						d.nationality='None';
 				});
-console.log(data)
+//console.log(data)
 var ndx  = crossfilter(data.values)
   , all = ndx.groupAll();
 
@@ -62,12 +56,11 @@ var totalCount = dc.dataCount("#datacount")
       .group(all);
 
 
+var trafficking = ndx.dimension(function(d) {return d.trafficking;});
+var traffickingGroup = trafficking.group().reduceSum(function(d){return d.qty;});
 
-var trafficking = ndx.dimension(function(d) {return d.what_type_of_exploitation_311;});
-var traffickingGroup = trafficking.group().reduceSum(function(d){return 1;});
-
-var nationality = ndx.dimension(function(d) {return d.name;});
-var nationalityGroup= nationality.group().reduceSum(function(d){return 1;});
+var nationality = ndx.dimension(function(d) {return d.nationality;});
+var nationalityGroup= nationality.group().reduceSum(function(d){return d.qty;});
 
 
 
@@ -93,12 +86,8 @@ var nationalityRow = dc.rowChart('#nationality')
           .elasticX(true);
 
  
-dc.renderAll();
-});
+dc.renderAll(); });
 }
-else{
-			cj('.dc_contacts').html('<div style="color:red; font-size:18px;">There is a database error. Please Contact the administrator as soon as possible.</div>');
-		}
 {/literal}
 {rdelim})("#dataviz-melissagraph")
 
@@ -108,16 +97,3 @@ else{
 {* .clear {clear:both;} *}
 </style>
 
-/*var data = {
-is_error:0,
-values:[
-  {type:"Guitarist",gender:"2", bd: "2000-05-05", sd: "2000-05-05", ed:"2001-05-05"},
-  {type:"Guitarist",gender:"1", bd: "1998-05-05", sd: "2000-05-05", ed:"2003-05-05"},
-  {type:"Violonist",gender:"3", bd: "1980-05-05", sd: "2000-05-05", ed:"2005-05-05"},
-  {type:"Violonist",gender:"2", bd: "1999-05-05", sd: "2000-05-05", ed:"2012-05-05"},
-  {type:"Pianist",gender:"1", bd: "1940-05-05", sd: "2000-05-05", ed:"2001-05-05"},
-  {type:"Pianist",gender:"3", bd: "1970-05-05", sd: "2000-05-05", ed:"2004-05-05"},
-  {type:"Drummer",gender:"2", bd: "1950-05-05", sd: "2000-05-05", ed:"2008-05-05"},
-  {type:"Bassist",gender:"1", bd: "1950-05-05", sd: "2000-05-05", ed:"2015-05-05"},
-  {type:"Bassist",gender:"3", bd: "1970-05-05", sd: "2000-05-05", ed:"2018-05-05"}
-]}; */
